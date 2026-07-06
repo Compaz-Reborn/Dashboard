@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compaz — Komplek Pasar</title>
+<meta name="description" content="Website informasi warga Gang Compaz (Komplek Pasar): galeri kegiatan dan info acara warga.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:        #262220;
+    --paper:      #EFE6D3;
+    --paper-dim:  #E4D8BC;
+    --awning:     #C13B32;
+    --awning-dk:  #9C2E27;
+    --kunyit:     #E8A33D;
+    --daun:       #5B7A4F;
+    --zinc:       #3B4A52;
+    --zinc-dk:    #2A353B;
+    --cream-line: rgba(38,34,32,0.12);
+
+    --font-display: "Anton", sans-serif;
+    --font-body: "Plus Jakarta Sans", sans-serif;
+    --font-mono: "IBM Plex Mono", monospace;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; }
+  h1,h2,h3{ font-family:var(--font-display); letter-spacing:0.3px; margin:0; text-transform:uppercase; }
+  p{ margin:0 0 1em; }
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--awning-dk);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px; height:2px;
+    background:var(--awning);
+    display:inline-block;
+  }
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 24px; }
+  section{ padding:88px 0; position:relative; }
+  :focus-visible{ outline:3px solid var(--kunyit); outline-offset:3px; }
+
+  /* ---------- awning stripe used as recurring texture ---------- */
+  .stripe-band{
+    height:14px;
+    background:repeating-linear-gradient(
+      -45deg,
+      var(--awning), var(--awning) 22px,
+      var(--paper) 22px, var(--paper) 44px
+    );
+  }
+
+  /* ---------- header ---------- */
+  header.topbar{
+    position:sticky; top:0; z-index:50;
+    background:var(--zinc);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .topbar .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:14px; padding-bottom:14px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--font-display);
+    color:var(--paper);
+    font-size:1.5rem;
+    letter-spacing:1px;
+    text-decoration:none;
+  }
+  .brand .mark{
+    width:34px; height:34px; border-radius:8px;
+    background:var(--awning);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-weight:700; font-size:0.85rem;
+    color:var(--paper);
+    transform:rotate(-4deg);
+  }
+  .brand small{
+    display:block;
+    font-family:var(--font-mono);
+    font-size:0.55rem;
+    letter-spacing:1.5px;
+    color:var(--kunyit);
+    text-transform:uppercase;
+  }
+  nav.mainnav{ display:flex; gap:2px; }
+  nav.mainnav a{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    color:var(--paper);
+    text-decoration:none;
+    padding:10px 14px;
+    border-radius:6px;
+    opacity:0.85;
+  }
+  nav.mainnav a:hover{ opacity:1; background:rgba(255,255,255,0.08); }
+  .nav-toggle{
+    display:none;
+    background:none; border:1px solid rgba(255,255,255,0.3);
+    color:var(--paper); border-radius:6px;
+    width:40px; height:36px;
+    font-size:1.1rem;
+    cursor:pointer;
+  }
+  @media (max-width:820px){
+    nav.mainnav{
+      display:none;
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--zinc-dk);
+      flex-direction:column;
+      padding:8px;
+      border-top:1px solid rgba(255,255,255,0.1);
+    }
+    nav.mainnav.open{ display:flex; }
+    nav.mainnav a{ padding:12px 14px; }
+    .nav-toggle{ display:block; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:var(--zinc);
+    color:var(--paper);
+    padding-top:56px;
+    padding-bottom:0;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid; gap:28px;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 7vw, 4.6rem);
+    line-height:0.96;
+    color:var(--paper);
+  }
+  .hero h1 span{ color:var(--kunyit); }
+  .hero .lede{
+    max-width:56ch;
+    font-size:1.08rem;
+    color:rgba(239,230,211,0.85);
+  }
+  .hero .cta-row{ display:flex; gap:14px; flex-wrap:wrap; margin-top:6px; }
+  .btn{
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    text-decoration:none;
+    padding:13px 22px;
+    border-radius:8px;
+    border:2px solid transparent;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform 0.15s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-solid{ background:var(--awning); color:var(--paper); }
+  .btn-outline{ border-color:rgba(239,230,211,0.4); color:var(--paper); }
+
+  /* gapura illustration */
+  .gapura{ width:100%; margin-top:8px; }
+  .flag{ transform-origin:top center; }
+  .bulb{ transform-origin:center; }
+  @media (prefers-reduced-motion: no-preference){
+    .flag{ animation:sway 3.2s ease-in-out infinite; }
+    .flag:nth-child(odd){ animation-delay:0.4s; }
+    .bulb{ animation:glow 2.4s ease-in-out infinite; }
+    .bulb:nth-child(3n){ animation-delay:0.6s; }
+    .bulb:nth-child(3n+1){ animation-delay:1.2s; }
+  }
+  @keyframes sway{
+    0%,100%{ transform:rotate(-3deg); }
+    50%{ transform:rotate(3deg); }
+  }
+  @keyframes glow{
+    0%,100%{ opacity:0.55; }
+    50%{ opacity:1; }
+  }
+
+  /* ---------- section headers ---------- */
+  .sec-head{ max-width:60ch; margin-bottom:44px; }
+  .sec-head h2{ font-size:clamp(1.8rem, 4vw, 2.6rem); margin-top:10px; }
+  .sec-head p{ margin-top:12px; color:rgba(38,34,32,0.72); font-size:1.02rem; }
+
+  /* ---------- tentang ---------- */
+  .about .grid{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:start;
+  }
+  @media (max-width:780px){ .about .grid{ grid-template-columns:1fr; } }
+  .about .facts{
+    display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  }
+  .fact{
+    background:var(--paper-dim);
+    border:1px solid var(--cream-line);
+    border-radius:10px;
+    padding:18px;
+  }
+  .fact .num{ font-family:var(--font-mono); font-size:1.6rem; color:var(--awning-dk); font-weight:600; }
+  .fact .label{ font-size:0.82rem; color:rgba(38,34,32,0.7); margin-top:2px; }
+
+  /* ---------- gallery ---------- */
+  .gallery{ background:var(--paper-dim); }
+  .slider{
+    position:relative;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 18px 40px rgba(38,34,32,0.16);
+    border:1px solid var(--cream-line);
+  }
+  .slides{
+    display:flex;
+    transition:transform 0.6s cubic-bezier(.65,.05,.36,1);
+  }
+  .slide{
+    min-width:100%;
+    display:grid;
+    grid-template-columns: 1fr;
+    background:var(--zinc);
+    color:var(--paper);
+  }
+  .slide-media{
+    aspect-ratio: 16/8;
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255,255,255,0.06), transparent 40%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 26px);
+  }
+  .slide-media img,
+  .slide-media video{
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+  .slide-icon{ font-size:clamp(3.2rem, 8vw, 5rem); filter:drop-shadow(0 6px 10px rgba(0,0,0,0.25)); }
+  .media-fallback{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--zinc);
+  }
+  .slide-caption{
+    padding:22px 28px 26px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .slide-caption h3{ font-size:1.3rem; color:var(--paper); }
+  .slide-tag{
+    font-family:var(--font-mono); font-size:0.72rem; letter-spacing:1px;
+    color:var(--kunyit); text-transform:uppercase;
+    border:1px solid rgba(232,163,61,0.5); padding:5px 10px; border-radius:20px;
+    white-space:nowrap;
+  }
+  .slider-controls{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between;
+    padding:0 10px; pointer-events:none;
+  }
+  .arrow{
+    pointer-events:auto;
+    background:rgba(38,34,32,0.45);
+    color:var(--paper);
+    border:none; border-radius:50%;
+    width:42px; height:42px;
+    font-size:1.1rem; cursor:pointer;
+    backdrop-filter:blur(2px);
+  }
+  .arrow:hover{ background:rgba(38,34,32,0.7); }
+  .dots{
+    display:flex; justify-content:center; gap:9px;
+    padding:16px 0 4px;
+  }
+  .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:rgba(38,34,32,0.25);
+    border:none; cursor:pointer; padding:0;
+  }
+  .dot[aria-current="true"]{ background:var(--awning); width:26px; border-radius:6px; }
+
+  /* ---------- acara ---------- */
+  .events{ background:var(--zinc); color:var(--paper); }
+  .events .sec-head p{ color:rgba(239,230,211,0.75); }
+  .events .sec-head .eyebrow{ color:var(--kunyit); }
+  .events .sec-head .eyebrow::before{ background:var(--kunyit); }
+  .event-card{
+    display:grid; grid-template-columns:170px 1fr auto;
+    gap:26px; align-items:center;
+    background:var(--zinc-dk);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:16px;
+    padding:26px;
+  }
+  @media (max-width:720px){
+    .event-card{ grid-template-columns:1fr; text-align:left; }
+  }
+  .event-date{
+    background:var(--awning);
+    border-radius:12px;
+    text-align:center;
+    padding:14px 8px;
+    font-family:var(--font-mono);
+  }
+  .event-date .dd{ font-family:var(--font-display); font-size:2.2rem; line-height:1; }
+  .event-date .mm{ font-size:0.75rem; letter-spacing:1px; text-transform:uppercase; }
+  .event-card h3{ font-size:1.5rem; color:var(--paper); margin-bottom:6px; }
+  .event-card p{ color:rgba(239,230,211,0.78); margin-bottom:0; }
+  .event-more{
+    margin-top:20px;
+    font-family:var(--font-mono); font-size:0.85rem;
+    color:rgba(239,230,211,0.6);
+  }
+
+  /* ---------- kontak / footer ---------- */
+  footer{ padding:70px 0 40px; }
+  .foot-grid{
+    display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:36px;
+  }
+  @media (max-width:720px){ .foot-grid{ grid-template-columns:1fr; } }
+  footer h4{
+    font-family:var(--font-mono); font-size:0.78rem; letter-spacing:1px;
+    text-transform:uppercase; color:var(--awning-dk); margin-bottom:14px;
+  }
+  footer ul{ list-style:none; margin:0; padding:0; }
+  footer li{ margin-bottom:8px; font-size:0.95rem; }
+  .foot-note{
+    margin-top:50px; padding-top:24px; border-top:1px solid var(--cream-line);
+    font-family:var(--font-mono); font-size:0.75rem; color:rgba(38,34,32,0.55);
+    display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a href="#" class="brand">
+      <span class="mark">CP</span>
+      <span>COMPAZ<small>Komplek Pasar</small></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainnav">☰</button>
+    <nav class="mainnav" id="mainnav">
+      <a href="#tentang">Tentang</a>
+      <a href="#galeri">Galeri Kegiatan</a>
+      <a href="#acara">Info &amp; Acara</a>
+      <a href="#kontak">Kontak</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--kunyit)">Gang Compaz · Komplek Pasar</span>
+    <h1>GANG KECIL,<br>GUYUB <span>GAK KALAH BESAR.</span></h1>
+    <p class="lede">Compaz itu singkatan dari Komplek Pasar — gang tempat warganya kenal satu sama lain, ronda bareng, dan selalu ramai tiap ada acara. Di sini kami kumpulkan kabar, jadwal, dan galeri kegiatan warga.</p>
+    <div class="cta-row">
+      <a href="#galeri" class="btn btn-solid">Lihat Galeri Kegiatan</a>
+      <a href="#acara" class="btn btn-outline">Info Acara Terbaru</a>
+    </div>
+  </div>
+
+  <svg class="gapura" viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustrasi gapura gang dengan bendera dan lampu hias">
+    <!-- roofline silhouette -->
+    <g fill="#2A353B">
+      <polygon points="0,190 40,150 90,190" />
+      <polygon points="80,190 140,140 210,190" />
+      <polygon points="200,190 250,160 300,190" />
+      <polygon points="290,190 340,145 400,190" />
+      <polygon points="390,190 440,160 500,190" />
+      <polygon points="490,190 550,140 620,190" />
+      <polygon points="610,190 660,160 710,190" />
+      <polygon points="700,190 750,150 800,190" />
+    </g>
+    <rect x="0" y="188" width="800" height="4" fill="#2A353B"/>
+
+    <!-- poles -->
+    <rect x="52" y="30" width="14" height="150" rx="3" fill="#EFE6D3" opacity="0.9"/>
+    <rect x="734" y="30" width="14" height="150" rx="3" fill="#EFE6D3" opacity="0.9"/>
+
+    <!-- arch ribbon -->
+    <path d="M60 46 Q400 -6 740 46" stroke="#C13B32" stroke-width="16" fill="none"/>
+    <text x="400" y="42" text-anchor="middle" font-family="Anton, sans-serif" font-size="19" fill="#EFE6D3" letter-spacing="1.5">SELAMAT DATANG DI GANG COMPAZ</text>
+
+    <!-- bunting line -->
+    <path d="M66 70 Q400 105 734 70" stroke="#EFE6D3" stroke-width="2" fill="none" opacity="0.5"/>
+
+    <!-- flags -->
+    <g>
+      <polygon class="flag" points="110,78 128,78 119,102" fill="#C13B32"/>
+      <polygon class="flag" points="160,86 178,86 169,110" fill="#E8A33D"/>
+      <polygon class="flag" points="210,92 228,92 219,116" fill="#5B7A4F"/>
+      <polygon class="flag" points="260,97 278,97 269,121" fill="#C13B32"/>
+      <polygon class="flag" points="310,100 328,100 319,124" fill="#E8A33D"/>
+      <polygon class="flag" points="360,102 378,102 369,126" fill="#5B7A4F"/>
+      <polygon class="flag" points="420,102 438,102 429,126" fill="#C13B32"/>
+      <polygon class="flag" points="470,100 488,100 479,124" fill="#E8A33D"/>
+      <polygon class="flag" points="520,97 538,97 529,121" fill="#5B7A4F"/>
+      <polygon class="flag" points="570,92 588,92 579,116" fill="#C13B32"/>
+      <polygon class="flag" points="620,86 638,86 629,110" fill="#E8A33D"/>
+      <polygon class="flag" points="670,78 688,78 679,102" fill="#5B7A4F"/>
+    </g>
+
+    <!-- string lights -->
+    <g fill="#E8A33D">
+      <circle class="bulb" cx="90" cy="75" r="4"/>
+      <circle class="bulb" cx="150" cy="84" r="4"/>
+      <circle class="bulb" cx="210" cy="91" r="4"/>
+      <circle class="bulb" cx="270" cy="96" r="4"/>
+      <circle class="bulb" cx="330" cy="100" r="4"/>
+      <circle class="bulb" cx="400" cy="102" r="4"/>
+      <circle class="bulb" cx="470" cy="100" r="4"/>
+      <circle class="bulb" cx="530" cy="96" r="4"/>
+      <circle class="bulb" cx="590" cy="91" r="4"/>
+      <circle class="bulb" cx="650" cy="84" r="4"/>
+      <circle class="bulb" cx="710" cy="75" r="4"/>
+    </g>
+  </svg>
+  <div class="stripe-band"></div>
+</section>
+
+<section id="tentang" class="about">
+  <div class="wrap grid">
+    <div>
+      <span class="eyebrow">Tentang Kami</span>
+      <h2 style="margin-top:10px;">Apa itu Compaz?</h2>
+      <p>Compaz adalah nama akrab untuk Gang Komplek Pasar — satu gang padat penduduk yang letaknya persis di sebelah pasar, jadi warganya sudah biasa dengar suara pasar pagi-pagi sejak dulu. Meski gang kecil, kegiatan warganya nggak pernah sepi: ronda malam jalan terus, ibu-ibu rutin pengajian, dan tiap 17 Agustus gang ini selalu paling meriah se-RW.</p>
+      <p>Website ini dibuat supaya warga (dan siapa pun yang mampir) bisa lihat kegiatan apa saja yang sedang berjalan, jadwal rutin mingguan, sampai info acara besar yang akan datang.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><div class="num">±120</div><div class="label">Kepala keluarga</div></div>
+      <div class="fact"><div class="num">6</div><div class="label">Kegiatan rutin warga</div></div>
+      <div class="fact"><div class="num">24</div><div class="label">Jam ronda bergilir</div></div>
+      <div class="fact"><div class="num">1</div><div class="label">Gang paling guyub se-RW*</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="galeri" class="gallery">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Dokumentasi Warga</span>
+      <h2>Galeri Kegiatan</h2>
+      <p>Sebagian potret kegiatan rutin dan momen kebersamaan warga Compaz. Geser otomatis, atau klik panah/​titik di bawah.</p>
+    </div>
+
+    <div class="slider" id="slider">
+      <div class="slides" id="slides">
+
+        <div class="slide">
+          <div class="slide-media">
+            <img src="asset/foto/1.jpg" alt="Gotong royong bersih gang" onerror="this.remove(); this.parentElement.querySelector('.media-fallback').style.display='flex';">
+            <div class="media-fallback" style="display:none;"><span class="slide-icon">🧹</span></div>
+          </div>
+          <div class="slide-caption">
+            <h3>Gotong Royong Bersih Gang</h3>
+            <span class="slide-tag">Sabtu Pagi</span>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-media">
+            <img src="asset/foto/2.jpg" alt="Posyandu balita dan lansia" onerror="this.remove(); this.parentElement.querySelector('.media-fallback').style.display='flex';">
+            <div class="media-fallback" style="display:none;"><span class="slide-icon">🩺</span></div>
+          </div>
+          <div class="slide-caption">
+            <h3>Posyandu Balita &amp; Lansia</h3>
+            <span class="slide-tag">Tiap Tgl 10</span>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-media">
+            <img src="asset/foto/3.jpg" alt="Pengajian rutin ibu-ibu" onerror="this.remove(); this.parentElement.querySelector('.media-fallback').style.display='flex';">
+            <div class="media-fallback" style="display:none;"><span class="slide-icon">📖</span></div>
+          </div>
+          <div class="slide-caption">
+            <h3>Pengajian Rutin Ibu-Ibu</h3>
+            <span class="slide-tag">Rabu Malam</span>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-media">
+            <img src="asset/foto/4.jpg" alt="Ronda malam bergilir" onerror="this.remove(); this.parentElement.querySelector('.media-fallback').style.display='flex';">
+            <div class="media-fallback" style="display:none;"><span class="slide-icon">🔦</span></div>
+          </div>
+          <div class="slide-caption">
+            <h3>Ronda Malam Bergilir</h3>
+            <span class="slide-tag">Setiap Malam</span>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-media">
+            <video src="asset/video/1.mp4" autoplay muted loop playsinline onerror="this.remove(); this.parentElement.querySelector('.media-fallback').style.display='flex';"></video>
+            <div class="media-fallback" style="display:none;"><span class="slide-icon">🤸</span></div>
+          </div>
+          <div class="slide-caption">
+            <h3>Senam Pagi Bersama</h3>
+            <span class="slide-tag">Minggu Pagi</span>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-media">
+            <img src="asset/foto/5.jpg" alt="Lomba agustusan tahun lalu" onerror="this.remove(); this.parentElement.querySelector('.media-fallback').style.display='flex';">
+            <div class="media-fallback" style="display:none;"><span class="slide-icon">🎉</span></div>
+          </div>
+          <div class="slide-caption">
+            <h3>Lomba Agustusan Tahun Lalu</h3>
+            <span class="slide-tag">17 Agustus</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="slider-controls">
+        <button class="arrow" id="prevBtn" aria-label="Slide sebelumnya">‹</button>
+        <button class="arrow" id="nextBtn" aria-label="Slide berikutnya">›</button>
+      </div>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<section id="acara" class="events">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Jangan Sampai Kelewatan</span>
+      <h2>Info &amp; Acara</h2>
+      <p>Acara besar warga Compaz yang sedang disiapkan. Klik untuk lihat rangkaian lomba dan detail acaranya.</p>
+    </div>
+
+    <div class="event-card">
+      <div class="event-date">
+        <div class="dd">17</div>
+        <div class="mm">Agustus</div>
+      </div>
+      <div>
+        <h3>Agustusan Compaz — HUT RI</h3>
+        <p>Lomba-lomba warga, gerak jalan santai, dan panggung gembira malam puncak. Rundown lengkap, daftar lomba, dan info pendaftaran ada di halaman acara.</p>
+      </div>
+      <a href="https://fasoleh7.github.io/compas/" target="_blank" rel="noopener" class="btn btn-solid">Lihat Detail Acara</a>
+    </div>
+
+    <p class="event-more">Info acara lain akan ditambahkan di sini seiring berjalannya waktu.</p>
+  </div>
+</section>
+
+<footer id="kontak">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Compaz</h4>
+        <p style="max-width:36ch; color:rgba(38,34,32,0.72);">Gang Komplek Pasar — website informasi kegiatan warga. Dikelola bersama oleh pengurus RT setempat.</p>
+      </div>
+      <div>
+        <h4>Tautan</h4>
+        <ul>
+          <li><a href="#tentang">Tentang Compaz</a></li>
+          <li><a href="#galeri">Galeri Kegiatan</a></li>
+          <li><a href="#rutin">Kegiatan Rutin</a></li>
+          <li><a href="#acara">Info &amp; Acara</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontak Pengurus</h4>
+        <ul>
+          <li>Ketua RT — 0812-xxxx-xxxx</li>
+          <li>Sekretariat — Pos Ronda Compaz</li>
+          <li>Grup WhatsApp Warga — tautan menyusul</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-note">
+      <span>© <span id="year"></span> Compaz — Komplek Pasar.</span>
+      <span>*Klaim antar warga, belum ada juri resmi 😄</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const mainnav = document.getElementById('mainnav');
+  navToggle.addEventListener('click', () => {
+    const open = mainnav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  mainnav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mainnav.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // slider
+  const slidesEl = document.getElementById('slides');
+  const slideCount = slidesEl.children.length;
+  const dotsWrap = document.getElementById('dots');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const sliderEl = document.getElementById('slider');
+  let current = 0;
+  let timer = null;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  for (let i = 0; i < slideCount; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'dot';
+    dot.setAttribute('aria-label', 'Ke slide ' + (i + 1));
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  }
+  const dots = dotsWrap.querySelectorAll('.dot');
+
+  function render() {
+    slidesEl.style.transform = 'translateX(-' + (current * 100) + '%)';
+    dots.forEach((d, i) => d.setAttribute('aria-current', i === current ? 'true' : 'false'));
+  }
+  function goTo(i) {
+    current = (i + slideCount) % slideCount;
+    render();
+  }
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  nextBtn.addEventListener('click', () => { next(); restartTimer(); });
+  prevBtn.addEventListener('click', () => { prev(); restartTimer(); });
+
+  function startTimer() {
+    if (reduceMotion) return;
+    timer = setInterval(next, 4500);
+  }
+  function restartTimer() {
+    clearInterval(timer);
+    startTimer();
+  }
+  sliderEl.addEventListener('mouseenter', () => clearInterval(timer));
+  sliderEl.addEventListener('mouseleave', startTimer);
+  sliderEl.addEventListener('focusin', () => clearInterval(timer));
+  sliderEl.addEventListener('focusout', startTimer);
+
+  render();
+  startTimer();
+</script>
+
+</body>
+</html>
